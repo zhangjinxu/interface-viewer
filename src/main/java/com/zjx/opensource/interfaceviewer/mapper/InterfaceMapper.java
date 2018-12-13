@@ -3,6 +3,8 @@ package com.zjx.opensource.interfaceviewer.mapper;
 import com.zjx.opensource.interfaceviewer.model.Interface;
 import com.zjx.opensource.interfaceviewer.model.InterfaceExample;
 import java.util.List;
+
+import com.zjx.opensource.interfaceviewer.model.InterfaceVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface InterfaceMapper {
@@ -93,4 +95,8 @@ public interface InterfaceMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Interface record);
+
+    List<InterfaceVO> selectByProjectId(@Param("projectId") int projectId);
+
+    InterfaceVO selectById(@Param("id") int interfaceId);
 }

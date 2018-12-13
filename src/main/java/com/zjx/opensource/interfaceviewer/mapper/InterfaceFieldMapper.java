@@ -93,4 +93,6 @@ public interface InterfaceFieldMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(InterfaceField record);
+
+    List<InterfaceField> selectByInterfaceId(@Param("interfaceId") int interfaceId);
 }
