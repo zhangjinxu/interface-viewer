@@ -23,6 +23,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseResult logout(HttpServletRequest request) {
+        request.getSession().setAttribute("user", null);
+        return ResponseResult.getSuccessResult();
+    }
+    @RequestMapping(value = "/user/info", method = RequestMethod.GET)
+    public ResponseResult userInfo(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            user.setPassword(null);
+        }
+        return ResponseResult.getSuccessResult(user);
+    }
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ResponseResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {

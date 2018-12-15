@@ -96,7 +96,7 @@ public interface InterfaceMapper {
      */
     int updateByPrimaryKey(Interface record);
 
-    List<InterfaceVO> selectByProjectId(@Param("projectId") int projectId);
+    List<InterfaceVO> selectByProjectId(@Param("projectId") int projectId,@Param("name") String nameLike,@Param("start") long start,@Param("end") long end);
 
     InterfaceVO selectById(@Param("id") int interfaceId);
 }

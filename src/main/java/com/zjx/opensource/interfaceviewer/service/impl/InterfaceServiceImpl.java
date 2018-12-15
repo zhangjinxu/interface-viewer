@@ -26,9 +26,8 @@ public class InterfaceServiceImpl implements InterfaceService {
     private InterfaceFieldMapper interfaceFieldMapper;
 
     @Override
-    public List<InterfaceVO> listInterface(User user, int pageNum, int projectId) {
-        PageHelper.startPage(pageNum,10);
-        List<InterfaceVO> interfaceVOS = interfaceMapper.selectByProjectId(projectId);
+    public List<InterfaceVO> listInterface(User user, int pageNum, int projectId, String nameLike, long start, long end) {
+        List<InterfaceVO> interfaceVOS = interfaceMapper.selectByProjectId(projectId,nameLike,start,end);
         for (InterfaceVO i : interfaceVOS) {
             Integer id = i.getId();
             List<InterfaceField> fields = interfaceFieldMapper.selectByInterfaceId(id);

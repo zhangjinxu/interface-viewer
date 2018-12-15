@@ -3,9 +3,11 @@ package com.zjx.opensource.interfaceviewer.controller;
 import com.zjx.opensource.interfaceviewer.model.*;
 import com.zjx.opensource.interfaceviewer.service.InterfaceService;
 import com.zjx.opensource.interfaceviewer.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +21,23 @@ public class InterfaceController {
     @Autowired
     private InterfaceService interfaceService;
 
-    @Autowired
-    private UserService userService;
 
-
-    @RequestMapping(value = "/interfaces", method = RequestMethod.GET)
-    public ResponseResult listInterface(HttpServletRequest request,@RequestParam(defaultValue = "1") int pageNum, @RequestParam int projectId) {
+    @RequestMapping(value = "/interfaces",method = RequestMethod.GET)
+    public ResponseResult listInterface(HttpServletRequest request,
+                                        @RequestParam(defaultValue = "1") int pageNum,
+                                        @RequestParam(defaultValue = "1") int projectId,
+                                        @RequestParam(defaultValue = "") String nameLike,
+                                        @RequestParam(defaultValue = "0") long start,
+                                        @RequestParam(defaultValue = "0") long end) {
         User user = (User) request.getSession().getAttribute("user");
-        List<InterfaceVO> interfaces = interfaceService.listInterface(user, pageNum, projectId);
+        if (pageNum < 1) {
+            pageNum = 1;
+        }
+        if (projectId < 1) {
+            projectId = 1;
+        }
+
+        List<InterfaceVO> interfaces = interfaceService.listInterface(user, pageNum, projectId, nameLike, start, end);
         return ResponseResult.getSuccessResult(interfaces);
     }
 

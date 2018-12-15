@@ -7,7 +7,7 @@ import com.zjx.opensource.interfaceviewer.model.User;
 import java.util.List;
 
 public interface InterfaceService {
-    List<InterfaceVO> listInterface(User user, int pageNum, int projectId);
+    List<InterfaceVO> listInterface(User user, int pageNum, int projectId, String nameLike, long start, long end);
 
     void insertInterface(User user, InterfaceAddOrModifyParam param);
 

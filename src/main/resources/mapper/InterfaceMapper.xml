@@ -368,11 +368,18 @@
 
   <select id="selectByProjectId" resultType="com.zjx.opensource.interfaceviewer.model.InterfaceVO">
       SELECT
-      i.id as id,i.name as name,i.create_time as createTime,i.description as description,i.url as url,i.update_time as updateTime,
+      i.id as id,i.name as name,i.create_time as createTime,i.description as description,i.url as url,i.update_time as updateTime,i.request_method as requestMethod,
       p.name as projectName,p.id as projectId,
       u.`name` as updateUsername,u.id as updateUserId
       FROM interface i,project p,user u
       WHERE i.is_delete=0 AND p.id= #{projectId} AND i.project_id= #{projectId} AND i.update_user_id=u.id
+      <if test="name!=null and name!=''">
+        and i.name like concat(#{name},'%')
+      </if>
+      <if test="start>0 and end>0 and end>start">
+        and i.update_time between #{start} and #{end}
+      </if>
+      order by i.update_time desc
     </select>
   <select id="selectById" resultType="com.zjx.opensource.interfaceviewer.model.InterfaceVO">
     SELECT
