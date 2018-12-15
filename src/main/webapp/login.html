@@ -38,6 +38,15 @@
           <input id="password-input" name="password" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
+      <div id="requestMethodDiv" class="row cl">
+        <label class="form-label col-xs-3"><span class="c-red">*</span>查看项目：</label>
+        <div class="formControls col-xs-5">
+				<span class="select-box">
+				<select id="projectId" name="projectId" class="select">
+				</select>
+				</span>
+        </div>
+      </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <label>
@@ -58,6 +67,25 @@
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script>
+
+    $.ajax({
+        url:'/projects',
+        type: 'GET',
+        dataType: 'json',
+        success:function(d) {
+            if (d.code == 1) {
+                appendProjects(d.data);
+            }
+        }
+    });
+
+    function appendProjects(projects) {
+        $.each(projects,function(i,n){
+          var option = "<option value='"+n.id+"'>"+n.name+"</option>";
+            $("#projectId").append(option);
+        });
+    }
+
   var submitFlag = true;
     $("#submitBtn").on("click", function () {
         if (!submitFlag) {
@@ -76,7 +104,7 @@
             data:{"username":username, "password": password},
             success: function (data) {
                 if (data.code == 1) {
-                    location.href = "/index.html";
+                    location.href = "/index.html?pid="+$("#projectId").val();
                     return;
                 }
                 alert(data.msg);
