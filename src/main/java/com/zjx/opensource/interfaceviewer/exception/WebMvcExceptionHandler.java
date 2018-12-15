@@ -19,9 +19,9 @@ public class WebMvcExceptionHandler {
         return ResponseResult.getFailResult(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseResult handleServiceException(Exception e) {
         return ResponseResult.getFailResult(e.getMessage());
-    }
+    }*/
 }

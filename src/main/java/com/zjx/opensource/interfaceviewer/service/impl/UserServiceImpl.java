@@ -1,4 +1,5 @@
 package com.zjx.opensource.interfaceviewer.service.impl;
+import java.util.Date;
 
 import com.zjx.opensource.interfaceviewer.exception.BussinessException;
 import com.zjx.opensource.interfaceviewer.mapper.UserMapper;
@@ -31,6 +32,24 @@ public class UserServiceImpl implements UserService {
             throw new BussinessException("用户名或密码错误");
         }
         return users.get(0);
+    }
+
+    @Override
+    public User register(String username, String password, String type) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andNameEqualTo(username);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (!users.isEmpty()) {
+            throw new BussinessException("用户名已存在");
+        }
+
+        User user = new User();
+        user.setName(username);
+        user.setPassword(password);
+        user.setType(type);
+        user.setCreateTime(new Date());
+        user.setIsDelete((byte)0);
+        return user;
     }
 
 }
