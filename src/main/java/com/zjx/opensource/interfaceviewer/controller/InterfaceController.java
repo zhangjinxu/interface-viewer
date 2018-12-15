@@ -1,13 +1,14 @@
 package com.zjx.opensource.interfaceviewer.controller;
 
-import com.zjx.opensource.interfaceviewer.model.*;
+import com.alibaba.fastjson.JSON;
+import com.zjx.opensource.interfaceviewer.model.InterfaceAddOrModifyParam;
+import com.zjx.opensource.interfaceviewer.model.InterfaceVO;
+import com.zjx.opensource.interfaceviewer.model.ResponseResult;
+import com.zjx.opensource.interfaceviewer.model.User;
 import com.zjx.opensource.interfaceviewer.service.InterfaceService;
-import com.zjx.opensource.interfaceviewer.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class InterfaceController {
     }
 
     @RequestMapping(value = "/interface",method = RequestMethod.POST)
-    public ResponseResult addInterface(HttpServletRequest request, InterfaceAddOrModifyParam param) {
+    public ResponseResult addInterface(HttpServletRequest request, @RequestParam String param) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResponseResult.getFailResult("请先登录");
@@ -57,13 +58,14 @@ public class InterfaceController {
         if (param == null) {
             return ResponseResult.getParamErrorResult();
         }
-        if (param.getId() != null) {
+        InterfaceAddOrModifyParam p = JSON.parseObject(param, InterfaceAddOrModifyParam.class);
+        if (p.getId() != null) {
+            p.setId(null);
+        }
+        if (!p.isCorrect()) {
             return ResponseResult.getParamErrorResult();
         }
-        if (!param.isCorrect()) {
-            return ResponseResult.getParamErrorResult();
-        }
-        interfaceService.insertInterface(user, param);
+        interfaceService.insertInterface(user, p);
         return ResponseResult.getSuccessResult();
     }
 
