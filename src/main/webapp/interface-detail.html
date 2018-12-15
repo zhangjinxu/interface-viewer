@@ -1,0 +1,297 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+
+<title>新增接口 - 接口管理 </title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-interface-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>接口名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="接口名称" id="name" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">详细描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="description" name="description" cols="" rows="" class="textarea"  placeholder="说点什么..."></textarea>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>url：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="接口地址" id="url" name="url">
+			</div>
+		</div>
+		<div id="requestMethodDiv" class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>请求方法：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select id="requestMethod" name="requestMethod" class="select">
+					<option value="ALL">ALL</option>
+					<option value="GET">GET</option>
+					<option value="POST">POST</option>
+					<option value="PUT">PUT</option>
+					<option value="DELETE">DELETE</option>
+				</select>
+				</span>
+			</div>
+		</div>
+		<!--<div class="row cl param">
+			<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this)" style="cursor: pointer;">&#xe60b;</i>请求参数：</label>
+			<div class="formControls col-xs-5 col-sm-5">
+				<input type="text" class="input-text" value="" placeholder="参数名及描述，必填" id="paramName" name="paramName">
+			</div>
+			<div class="formControls col-xs-1 col-sm-1">
+				<span class="select-box">
+				<select name="paramType" class="select">
+					<option value="int">int</option>
+					<option value="long">long</option>
+					<option value="string">string</option>
+					<option value="boolean">boolean</option>
+					<option value="array">array</option>
+				</select>
+				</span>
+			</div>
+			<div class="formControls col-xs-3 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="默认值" id="paramDefaultValue" name="paramDefaultValue">
+			</div>
+		</div>
+		<div class="row cl result">
+			<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this)" style="cursor: pointer">&#xe60b;</i>响应字段：</label>
+			<div class="formControls col-xs-5 col-sm-5">
+				<input type="text" class="input-text" value="" placeholder="字段名及描述，必填" id="resultName" name="resultName">
+			</div>
+			<div class="formControls col-xs-1 col-sm-1">
+				<span class="select-box">
+				<select name="resultType" class="select">
+					<option value="int">int</option>
+					<option value="long">long</option>
+					<option value="string">string</option>
+					<option value="boolean">boolean</option>
+					<option value="array">array</option>
+				</select>
+				</span>
+			</div>
+			<div class="formControls col-xs-3 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="默认值" id="resultDefaultValue" name="resultDefaultValue">
+			</div>
+		</div>-->
+		<div class="row cl">
+			<div class="form-label col-xs-5 col-sm-5">
+				<button type="button" onClick="addRequestParam()" class="btn btn-default radius">增加请求参数</button>
+				<button type="button" onClick="addResponseField()" class="btn btn-default radius">增加响应字段</button>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="saveInterface();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+				<button  class="btn btn-default radius" type="reset">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="lib/jquery.form.min.js"></script>
+<script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    function getPId(param) {
+        var pId = getQueryString("pid");
+        if (pId!=null && pId > 0) {
+            param.projectId = pId;
+        }
+    }
+    var saveFlag = true;
+    function saveInterface() {
+        if (!saveFlag) {
+            return;
+        }
+        saveFlag = false;
+        var param = getAddParam();
+        if (!param) {
+            saveFlag = true;
+            return;
+        }
+
+		$.ajax({
+			url:'/interface',
+            type: 'POST',
+            dataType: 'json',
+            data: {"param":JSON.stringify(param)},
+			success:function(d){
+                if (d.code == 1) {
+                    alert("ok");
+                    location.reload();
+                    return;
+                }
+                alert(d.msg);
+			},
+			complete:function(){
+			    saveFlag = true;
+			}
+		});
+
+
+    }
+
+    function getAddParam() {
+        var param = {};
+        var name = $.trim($("#name").val());
+        if (name == "") {
+            alert("接口名不能为空");
+            return false;
+        }
+        param.name = name;
+        var description = $.trim($("#description").val());
+        param.description = description;
+
+        var url = $.trim($("#url").val());
+        if (url == "") {
+            return false;
+        }
+        param.url = url;
+
+        var requestMethod = $("#requestMethod").val();
+        param.requestMethod = requestMethod;
+
+        getPId(param);
+
+        var fields = [];
+
+        getInterfaceFields(fields);
+
+        param.fields = fields;
+		return param;
+
+    }
+
+    function getInterfaceFields(fields){
+
+        $(".param").each(function(i,n){
+			var field = {};
+            field.type = "param";
+            var name = $.trim($(n).find("#paramName").val());
+            field.name = name;
+			var valueType = $(n).find("select").val();
+			field.valueType = valueType;
+			var defaultValue = $(n).find("#paramDefaultValue").val();
+			field.defaultValue = defaultValue;
+            fields.push(field);
+		});
+        $(".result").each(function(i,n){
+            var field = {};
+            field.type = "result";
+            var name = $.trim($(n).find("#resultName").val());
+            field.name = name;
+            var valueType = $(n).find("select").val();
+            field.valueType = valueType;
+            var defaultValue = $(n).find("#resultDefaultValue").val();
+            field.defaultValue = defaultValue;
+            fields.push(field);
+		});
+	}
+    function addRequestParam() {
+        $("#requestMethodDiv").after(getRequestParamRow());
+    }
+
+    function addResponseField() {
+        $("#requestMethodDiv").after(getResponseFieldRow());
+    }
+
+    function deleteRow(row) {
+        $(row.parentNode.parentNode).remove();
+    }
+
+    function getResponseFieldRow() {
+        var row = "<div class=\"row cl result\">\n" +
+            "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\"><i class=\"Hui-iconfont f-17\" onclick=\"deleteRow(this)\" style=\"cursor: pointer\">&#xe60b;</i>响应字段：</label>\n" +
+            "\t\t\t<div class=\"formControls col-xs-5 col-sm-5\">\n" +
+            "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"字段名及描述，必填\" id=\"resultName\" name=\"resultName\">\n" +
+            "\t\t\t</div>\n" +
+            "\t\t\t<div class=\"formControls col-xs-1 col-sm-1\">\n" +
+            "\t\t\t\t<span class=\"select-box\">\n" +
+            "\t\t\t\t<select name=\"resultType\" class=\"select\">\n" +
+            "\t\t\t\t\t<option value=\"int\">int</option>\n" +
+            "\t\t\t\t\t<option value=\"long\">long</option>\n" +
+            "\t\t\t\t\t<option value=\"string\">string</option>\n" +
+            "\t\t\t\t\t<option value=\"boolean\">boolean</option>\n" +
+            "\t\t\t\t\t<option value=\"array\">array</option>\n" +
+            "\t\t\t\t</select>\n" +
+            "\t\t\t\t</span>\n" +
+            "\t\t\t</div>\n" +
+            "\t\t\t<div class=\"formControls col-xs-3 col-sm-3\">\n" +
+            "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"默认值\" id=\"resultDefaultValue\" name=\"resultDefaultValue\">\n" +
+            "\t\t\t</div>\n" +
+            "\t\t</div>";
+        return row;
+    }
+
+    function getRequestParamRow() {
+		var row = "<div class=\"row cl param\">\n" +
+            "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\"><i class=\"Hui-iconfont f-17\" onclick=\"deleteRow(this)\" style=\"cursor: pointer;\">&#xe60b;</i>请求参数：</label>\n" +
+            "\t\t\t<div class=\"formControls col-xs-5 col-sm-5\">\n" +
+            "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"参数名及描述，必填\" id=\"paramName\" name=\"paramName\">\n" +
+            "\t\t\t</div>\n" +
+            "\t\t\t<div class=\"formControls col-xs-1 col-sm-1\">\n" +
+            "\t\t\t\t<span class=\"select-box\">\n" +
+            "\t\t\t\t<select name=\"paramType\" class=\"select\">\n" +
+            "\t\t\t\t\t<option value=\"int\">int</option>\n" +
+            "\t\t\t\t\t<option value=\"long\">long</option>\n" +
+            "\t\t\t\t\t<option value=\"string\">string</option>\n" +
+            "\t\t\t\t\t<option value=\"boolean\">boolean</option>\n" +
+            "\t\t\t\t\t<option value=\"array\">array</option>\n" +
+            "\t\t\t\t</select>\n" +
+            "\t\t\t\t</span>\n" +
+            "\t\t\t</div>\n" +
+            "\t\t\t<div class=\"formControls col-xs-3 col-sm-3\">\n" +
+            "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"默认值\" id=\"paramDefaultValue\" name=\"paramDefaultValue\">\n" +
+            "\t\t\t</div>\n" +
+            "\t\t</div>";
+		return row;
+    }
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

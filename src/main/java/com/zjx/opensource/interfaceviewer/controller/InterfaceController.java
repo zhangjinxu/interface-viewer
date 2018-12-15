@@ -80,15 +80,17 @@ public class InterfaceController {
     }
 
     @RequestMapping(value = "/interface",method = RequestMethod.PUT)
-    public ResponseResult modifyInterface(HttpServletRequest request, InterfaceAddOrModifyParam param) {
+    public ResponseResult modifyInterface(HttpServletRequest request, @RequestParam String param) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResponseResult.getFailResult("请先登录");
         }
-        if (param == null || param.getId() == null || param.getId() <= 0) {
+        InterfaceAddOrModifyParam p = JSON.parseObject(param, InterfaceAddOrModifyParam.class);
+
+        if (p == null || p.getId() == null || p.getId() <= 0) {
             return ResponseResult.getParamErrorResult();
         }
-        interfaceService.updateInterface(user, param);
+        interfaceService.updateInterface(user, p);
         return ResponseResult.getSuccessResult();
     }
 }
