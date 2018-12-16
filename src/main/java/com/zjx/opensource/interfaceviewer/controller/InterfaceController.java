@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -50,15 +52,15 @@ public class InterfaceController {
     }
 
     @RequestMapping(value = "/interface",method = RequestMethod.POST)
-    public ResponseResult addInterface(HttpServletRequest request, @RequestParam String param) {
+    public ResponseResult addInterface(HttpServletRequest request, InterfaceAddOrModifyParam p) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResponseResult.getFailResult("请先登录");
         }
-        if (param == null) {
+        if (p == null) {
             return ResponseResult.getParamErrorResult();
         }
-        InterfaceAddOrModifyParam p = JSON.parseObject(param, InterfaceAddOrModifyParam.class);
+//        InterfaceAddOrModifyParam p = JSON.parseObject(param, InterfaceAddOrModifyParam.class);
         if (p.getId() != null) {
             p.setId(null);
         }
@@ -69,13 +71,25 @@ public class InterfaceController {
         return ResponseResult.getSuccessResult();
     }
 
+    @RequestMapping(value = "/interfaces", method = RequestMethod.DELETE)
+    public ResponseResult deleteInterfaces(HttpServletRequest request,@RequestParam(value = "interfaceIds[]")int[] interfaceIds) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResponseResult.getFailResult("请先登录");
+        }
+
+
+        interfaceService.deleteInterface(user,interfaceIds);
+        return ResponseResult.getSuccessResult();
+    }
     @RequestMapping(value = "/interface/{id}", method = RequestMethod.DELETE)
     public ResponseResult deleteInterface(HttpServletRequest request, @PathVariable("id") int interfaceId) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResponseResult.getFailResult("请先登录");
         }
-        interfaceService.deleteInterface(user,interfaceId);
+        int[] ids = {interfaceId};
+        interfaceService.deleteInterface(user,ids);
        return ResponseResult.getSuccessResult();
     }
 

@@ -60,46 +60,62 @@
 				</span>
 			</div>
 		</div>
-		<!--<div class="row cl param">
-			<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this)" style="cursor: pointer;">&#xe60b;</i>请求参数：</label>
-			<div class="formControls col-xs-5 col-sm-5">
-				<input type="text" class="input-text" value="" placeholder="参数名及描述，必填" id="paramName" name="paramName">
+		<div class="requestParam">
+			<div class="row cl param">
+				<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this,'.param')" style="cursor: pointer;">&#xe60b;</i>请求参数：</label>
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="" placeholder="参数名及描述，必填" id="paramName" name="paramName">
+				</div>
+				<div class="formControls col-xs-1 col-sm-1">
+					<span class="select-box">
+					<select name="paramType" class="select">
+						<option value="int">int</option>
+						<option value="long">long</option>
+						<option value="string">string</option>
+						<option value="boolean">boolean</option>
+						<option value="array">array</option>
+					</select>
+					</span>
+				</div>
+				<div class="formControls col-xs-3 col-sm-3">
+					<input type="text" class="input-text" value="" placeholder="默认值" id="paramDefaultValue" name="paramDefaultValue">
+				</div>
 			</div>
-			<div class="formControls col-xs-1 col-sm-1">
-				<span class="select-box">
-				<select name="paramType" class="select">
-					<option value="int">int</option>
-					<option value="long">long</option>
-					<option value="string">string</option>
-					<option value="boolean">boolean</option>
-					<option value="array">array</option>
-				</select>
-				</span>
-			</div>
-			<div class="formControls col-xs-3 col-sm-3">
-				<input type="text" class="input-text" value="" placeholder="默认值" id="paramDefaultValue" name="paramDefaultValue">
+			<div class="row cl param paramDescriptionClass">
+				<label class="form-label col-xs-4 col-sm-2">请求参数详细描述：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<textarea id="paramDescription" name="description" cols="" rows="" class="textarea"  placeholder="参数详细描述"></textarea>
+				</div>
 			</div>
 		</div>
-		<div class="row cl result">
-			<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this)" style="cursor: pointer">&#xe60b;</i>响应字段：</label>
-			<div class="formControls col-xs-5 col-sm-5">
-				<input type="text" class="input-text" value="" placeholder="字段名及描述，必填" id="resultName" name="resultName">
+		<div class="responseField">
+			<div class="row cl result">
+				<label class="form-label col-xs-4 col-sm-2"><i class="Hui-iconfont f-17" onclick="deleteRow(this,'.result')" style="cursor: pointer">&#xe60b;</i>响应字段：</label>
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="" placeholder="字段名及描述，必填" id="resultName" name="resultName">
+				</div>
+				<div class="formControls col-xs-1 col-sm-1">
+					<span class="select-box">
+					<select name="resultType" class="select">
+						<option value="int">int</option>
+						<option value="long">long</option>
+						<option value="string">string</option>
+						<option value="boolean">boolean</option>
+						<option value="array">array</option>
+					</select>
+					</span>
+				</div>
+				<div class="formControls col-xs-3 col-sm-3">
+					<input type="text" class="input-text" value="" placeholder="默认值" id="resultDefaultValue" name="resultDefaultValue">
+				</div>
 			</div>
-			<div class="formControls col-xs-1 col-sm-1">
-				<span class="select-box">
-				<select name="resultType" class="select">
-					<option value="int">int</option>
-					<option value="long">long</option>
-					<option value="string">string</option>
-					<option value="boolean">boolean</option>
-					<option value="array">array</option>
-				</select>
-				</span>
+			<div class="row cl result resultDescriptionClass">
+				<label class="form-label col-xs-4 col-sm-2">响应字段详细描述：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<textarea id="resultDescription" name="description" cols="" rows="" class="textarea"  placeholder="响应字段详细描述"></textarea>
+				</div>
 			</div>
-			<div class="formControls col-xs-3 col-sm-3">
-				<input type="text" class="input-text" value="" placeholder="默认值" id="resultDefaultValue" name="resultDefaultValue">
-			</div>
-		</div>-->
+		</div>
 		<div class="row cl">
 			<div class="form-label col-xs-5 col-sm-5">
 				<button type="button" onClick="addRequestParam()" class="btn btn-default radius">增加请求参数</button>
@@ -132,7 +148,12 @@
 <script type="text/javascript">
     function getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
+        var r = "";
+        if (window.parent) {
+            r = window.parent.location.search.substr(1).match(reg);
+        }else {
+            r = window.location.search.substr(1).match(reg);
+		}
         if (r != null) return unescape(r[2]);
         return null;
     }
@@ -159,7 +180,7 @@
 			url:'/interface',
             type: 'POST',
             dataType: 'json',
-            data: {"param":JSON.stringify(param)},
+            data: param,
 			success:function(d){
                 if (d.code == 1) {
                     alert("ok");
@@ -198,38 +219,66 @@
 
         getPId(param);
 
-        var fields = [];
+        getInterfaceFields(param);
 
-        getInterfaceFields(fields);
-
-        param.fields = fields;
 		return param;
 
     }
 
-    function getInterfaceFields(fields){
+    function getField(index, fieldName) {
+        var fieldsKeyPrefix = "fields[";
+        var fieldsKeySuffix = "].";
+        return fieldsKeyPrefix + index + fieldsKeySuffix + fieldName;
+    }
 
-        $(".param").each(function(i,n){
-			var field = {};
-            field.type = "param";
+    function getInterfaceFields(param){
+
+		var indexEnd = $(".requestParam").length;
+
+        $(".requestParam").each(function(i,n){
+
+            var key = getField(i, "type");
+            param[key] = "param";
+
             var name = $.trim($(n).find("#paramName").val());
-            field.name = name;
+            key = getField(i, "name");
+            param[key] = name;
+
 			var valueType = $(n).find("select").val();
-			field.valueType = valueType;
+            key = getField(i, "valueType");
+            param[key] = valueType;
+
 			var defaultValue = $(n).find("#paramDefaultValue").val();
-			field.defaultValue = defaultValue;
-            fields.push(field);
+            key = getField(i, "defaultValue");
+            param[key] = defaultValue;
+
+            var description = $.trim($(n).find("#paramDescription").val());
+            key = getField(i, "description");
+            param[key] = description;
+
 		});
-        $(".result").each(function(i,n){
-            var field = {};
-            field.type = "result";
+        $(".responseField").each(function(i,n){
+
+            var currentIndex = i + indexEnd;
+
+            var key = getField(currentIndex, "type");
+            param[key] = "result";
+
             var name = $.trim($(n).find("#resultName").val());
-            field.name = name;
+            key = getField(currentIndex, "name");
+            param[key] = name;
+
             var valueType = $(n).find("select").val();
-            field.valueType = valueType;
+            key = getField(currentIndex, "valueType");
+            param[key] = valueType;
+
             var defaultValue = $(n).find("#resultDefaultValue").val();
-            field.defaultValue = defaultValue;
-            fields.push(field);
+            key = getField(currentIndex, "defaultValue");
+            param[key] = defaultValue;
+
+            var description = $.trim($(n).find("#resultDescription").val());
+            key = getField(currentIndex, "description");
+            param[key] = description;
 		});
 	}
     function addRequestParam() {
@@ -240,12 +289,16 @@
         $("#requestMethodDiv").after(getResponseFieldRow());
     }
 
-    function deleteRow(row) {
-        $(row.parentNode.parentNode).remove();
+    function deleteRow(row,typeClass) {
+        var row1 = $(row.parentNode.parentNode.parentNode);
+        // var rowDesription = row1.next(typeClass);
+        row1.remove();
+		// rowDesription.remove();
     }
 
     function getResponseFieldRow() {
-        var row = "<div class=\"row cl result\">\n" +
+        var row = "<div class=\"responseField\">";
+         row += "<div class=\"row cl result\">\n" +
             "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\"><i class=\"Hui-iconfont f-17\" onclick=\"deleteRow(this)\" style=\"cursor: pointer\">&#xe60b;</i>响应字段：</label>\n" +
             "\t\t\t<div class=\"formControls col-xs-5 col-sm-5\">\n" +
             "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"字段名及描述，必填\" id=\"resultName\" name=\"resultName\">\n" +
@@ -265,11 +318,19 @@
             "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"默认值\" id=\"resultDefaultValue\" name=\"resultDefaultValue\">\n" +
             "\t\t\t</div>\n" +
             "\t\t</div>";
+        row += "<div class=\"row cl result\">\n" +
+            "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\">响应字段详细描述：</label>\n" +
+            "\t\t\t<div class=\"formControls col-xs-8 col-sm-9\">\n" +
+            "\t\t\t\t<textarea id=\"resultDescription\" name=\"description\" cols=\"\" rows=\"\" class=\"textarea\"  placeholder=\"响应字段详细描述\"></textarea>\n" +
+            "\t\t\t</div>\n" +
+            "\t\t</div>";
+        row += "</div>";
         return row;
     }
 
     function getRequestParamRow() {
-		var row = "<div class=\"row cl param\">\n" +
+        var row = "<div class=\"requestParam\">";
+			row += "<div class=\"row cl param\">\n" +
             "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\"><i class=\"Hui-iconfont f-17\" onclick=\"deleteRow(this)\" style=\"cursor: pointer;\">&#xe60b;</i>请求参数：</label>\n" +
             "\t\t\t<div class=\"formControls col-xs-5 col-sm-5\">\n" +
             "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"参数名及描述，必填\" id=\"paramName\" name=\"paramName\">\n" +
@@ -289,6 +350,13 @@
             "\t\t\t\t<input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"默认值\" id=\"paramDefaultValue\" name=\"paramDefaultValue\">\n" +
             "\t\t\t</div>\n" +
             "\t\t</div>";
+        row += "<div class=\"row cl param\">\n" +
+            "\t\t\t<label class=\"form-label col-xs-4 col-sm-2\">请求参数详细描述：</label>\n" +
+            "\t\t\t<div class=\"formControls col-xs-8 col-sm-9\">\n" +
+            "\t\t\t\t<textarea id=\"paramDescription\" name=\"description\" cols=\"\" rows=\"\" class=\"textarea\"  placeholder=\"参数详细描述\"></textarea>\n" +
+            "\t\t\t</div>\n" +
+            "\t\t</div>";
+        row += "</div>";
 		return row;
     }
 </script>

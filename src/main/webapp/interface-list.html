@@ -47,7 +47,7 @@
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+            <a href="javascript:;" onclick="interfaces_del()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i>
                 批量删除
             </a>
@@ -55,7 +55,7 @@
                 <i class="Hui-iconfont">&#xe600;</i>
                 添加接口
             </a>
-        </span> <!--<span class="r">共有数据：<strong id="totalNumber"></strong> 条</span>-->
+        </span>
 	</div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
@@ -150,8 +150,6 @@
         }
     }
 
-
-
     function getStartDate(param) {
         var start = $.trim($("#startDate").val());
         if (start) {
@@ -188,7 +186,7 @@
                     data = d.data;
                     $.each(data,function(i,n){
                         n.name = "<u style=\"cursor:pointer\" class=\"text-primary\" onClick=\"interface_detail("+n.id+")\" title=\"查看\">"+n.name+"</u>";
-                        n.checkbox = "<input type=\"checkbox\" class='row-checkbox'/>";
+                        n.checkbox = "<input type=\"checkbox\" data-id='" + n.id + "' class='row-checkbox'/>";
                         n.operation = getOperation(n.id);
                     });
                 }
@@ -223,7 +221,46 @@
 
     }
 
+    function getIdsForDel() {
+		var ids = [];
+        $(".row-checkbox:checked").each(function(i,n){
+            ids.push($(n).data("id"));
+		});
+        return ids;
+    }
+
+    function interfaces_del() {
+        var ids = getIdsForDel();
+		$.ajax({
+			url:'/interfaces',
+			type:'DELETE',
+			dataType:'json',
+			data:{"interfaceIds": ids},
+			success:function(data){
+                if (data.code == 1) {
+                    alert("ok");
+                    location.reload();
+                    return;
+                }
+                alert(data.msg);
+			}
+		});
+    }
+
     function interface_del(id) {
+        $.ajax({
+			url:'/interface/'+id,
+            type: 'DELETE',
+            dataType: 'json',
+			success:function(data){
+                if (data.code == 1) {
+                    alert("ok");
+                    location.reload();
+                    return;
+                }
+                alert(data.msg);
+			}
+		});
 
     }
 

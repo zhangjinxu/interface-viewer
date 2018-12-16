@@ -53,6 +53,15 @@ public class InterfaceServiceImpl implements InterfaceService {
     }
 
     @Override
+    public void deleteInterface(User user, int[] interfaceId) {
+        if (interfaceId == null) {
+            return;
+        }
+        for (int i : interfaceId) {
+            deleteInterface(user, i);
+        }
+    }
+
     public void deleteInterface(User user, int interfaceId) {
         Interface i = interfaceMapper.selectByPrimaryKey(interfaceId);
         if (i == null) {
@@ -104,6 +113,9 @@ public class InterfaceServiceImpl implements InterfaceService {
     }
 
     private void insertInterfaceField(int userId, List<InterfaceField> fields, Integer interfaceId) {
+        if (fields == null) {
+            return;
+        }
         for (InterfaceField f : fields) {
             f.setId(null);
             f.setInterfaceId(interfaceId);

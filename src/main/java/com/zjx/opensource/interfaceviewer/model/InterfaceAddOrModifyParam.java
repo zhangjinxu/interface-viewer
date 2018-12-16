@@ -3,6 +3,7 @@ package com.zjx.opensource.interfaceviewer.model;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InterfaceAddOrModifyParam implements Serializable {
@@ -54,7 +55,8 @@ public class InterfaceAddOrModifyParam implements Serializable {
      */
     private Integer projectId;
 
-    private List<InterfaceField> fields;
+    private List<InterfaceField> fields = new ArrayList<>(1);
+
 
     public Integer getId() {
         return id;
@@ -124,6 +126,9 @@ public class InterfaceAddOrModifyParam implements Serializable {
         }
         if (projectId == null || projectId <= 0) {
             return false;
+        }
+        if (fields == null) {
+            return true;
         }
         for (InterfaceField field : fields) {
             if (StringUtils.isEmpty(field.getName())) {

@@ -11,7 +11,7 @@ public interface InterfaceService {
 
     void insertInterface(User user, InterfaceAddOrModifyParam param);
 
-    void deleteInterface(User user, int interfaceId);
+    void deleteInterface(User user, int[] interfaceId);
 
     InterfaceVO selectById(User user, int interfaceId);
 
