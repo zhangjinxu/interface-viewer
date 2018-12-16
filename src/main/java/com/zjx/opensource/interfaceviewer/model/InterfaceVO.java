@@ -1,7 +1,6 @@
 package com.zjx.opensource.interfaceviewer.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -100,6 +99,8 @@ public class InterfaceVO implements Serializable {
 
     private Integer projectId;
 
+    private List<InterfaceField> fields = new ArrayList<>(1);
+
 
     public String getCreatUsername() {
         return creatUsername;
@@ -117,7 +118,6 @@ public class InterfaceVO implements Serializable {
         this.updateUsername = updateUsername;
     }
 
-    private List<InterfaceField> fields = new ArrayList<>();
 
     public Integer getId() {
         return id;

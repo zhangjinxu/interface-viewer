@@ -383,7 +383,7 @@
     </select>
   <select id="selectById" resultType="com.zjx.opensource.interfaceviewer.model.InterfaceVO">
     SELECT
-      i.id as id,i.name as name,i.create_time as createTime,i.description as description,i.url as url,i.update_time as updateTime,
+      i.id as id,i.name as name,i.create_time as createTime,i.description as description,i.url as url,i.update_time as updateTime,i.request_method as requestMethod,
       p.name as projectName,p.id as projectId,
       u.`name` as updateUsername,u.id as updateUserId
       FROM interface i,project p,user u
