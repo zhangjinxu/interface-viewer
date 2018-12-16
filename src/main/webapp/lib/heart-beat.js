@@ -6,7 +6,7 @@ function ajaxHeartBeat() {
         dataType: 'json',
         success: function (data) {
             if (data.code != 1 || !data.data) {
-                // location.href = "/login.html";
+                location.href = "/login.html";
                 return;
             }
 
@@ -18,5 +18,6 @@ function ajaxHeartBeat() {
         }
     });
 };
+ajaxHeartBeat();
 
 setInterval(ajaxHeartBeat, 1000*60*15);
